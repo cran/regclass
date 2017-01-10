@@ -7,7 +7,7 @@ Combining levels of a categorical variable
 \description{
 This function determines levels that are similar to each other either in terms of their average value of some quantitative variable or the percentages of each level of a two-level categorical variable.  Use it to get a rough idea of what levels are "about the same" with regard to some variable.}
 \usage{
-suggest_levels(formula,data,maxlevels=NA,target=NA,recode=FALSE) }
+suggest_levels(formula,data,maxlevels=NA,target=NA,recode=FALSE,plot=TRUE,...) }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{formula}{
@@ -24,8 +24,18 @@ The number of resulting levels into which the levels of x will be combined.  Wil
 }
 
   \item{recode}{
-\code{TRUE} or \code{FALSE}.  If \code{TRUE}, the function outputs a conversion table as well as the new level identities.  
+\code{TRUE} or \code{FALSE}.  If \code{TRUE}, the function outputs a conversion table as well as the new level identities
 }
+
+  \item{plot}{
+\code{TRUE} or \code{FALSE}.  If \code{TRUE}, a plot is provided which shows the distribution of \code{y} for each level of \code{x} and lines showing which levels are grouped together.
+}
+
+  \item{...}{
+Additional arguments used to make the plot.  Typically this will be \code{equal=TRUE} and \code{inside=TRUE} to be passed to \code{mosaic}.
+}
+
+
 
 }
 \details{
@@ -69,12 +79,6 @@ Adam Petrie
   SL <- suggest_levels(Donation.Amount~URBANICITY,data=DONOR,target=4,recode=TRUE)
 	SL$Conversion
 
-  #Can levels of CLUSTER_CODE be treated the same with regards to probability of donation?
-  #There are 54 levels of CLUSTER_CODE, so set maxlevels low to speed things up
-  suggest_levels(Donation.Amount~CLUSTER_CODE,data=DONOR,maxlevels=10)
-  SL <- suggest_levels(Donation.Amount~CLUSTER_CODE,data=DONOR,maxlevels=10,recode=TRUE)
-	SL$Conversion2
-	
 	#Add a column to the DONOR dataframe that contains these new cluster identities
   DONOR$newCLUSTER_CODE <- SL$newlevels
 	 }

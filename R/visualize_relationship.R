@@ -1,4 +1,4 @@
-visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,nplots=5,seed=NA,pos="topright") {
+visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,nplots=5,seed=NA,pos="topright",...) {
   if(!is.na(seed)) { set.seed(seed) } 
   if(missing(interest)) { stop("Must specify x variable in the interest= argument") }
   if(missing(on)) { stop("Must give name of a dataframe in the on= argument")}
@@ -27,7 +27,7 @@ visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,np
       selected <- which(x.val==x)
       y.avg <- c(y.avg,mean(y.pred[selected]))
     }
-    plot(y.values~x.val,xlab=interest,ylab=paste("Predicted",y.name),pch=20,cex=0.7 )
+    plot(y.values~x.val,xlab=interest,ylab=paste("Predicted",y.name),pch=20,cex=0.7,...)
     points(y.avg~x.u,pch=20,cex=0.3,col="red" )
     #SS <- smooth.spline(x.u, y.avg, w = n,df=smooth*length(x.u)); lines(SS)
     if(smooth==TRUE) {
@@ -40,7 +40,7 @@ visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,np
     legend(pos,c("Observed","Predicted"),col=c("black","red"),pch=20,cex=0.5)
   }
   if(marginal==FALSE) {
-    plot(y.values~x.val,xlab=interest,ylab=paste("Predicted",y.name),pch=20,cex=0.7 )
+    plot(y.values~x.val,xlab=interest,ylab=paste("Predicted",y.name),pch=20,cex=0.7,...)
     
     cols <- rainbow(1.2*nplots)[1:nplots]
     for (i in 1:nplots) {

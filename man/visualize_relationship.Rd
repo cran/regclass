@@ -12,7 +12,7 @@ Attempts to show how the relationship between y and x is being modeled in a part
 }
 \usage{
 visualize_relationship(TREE,interest,on,smooth=TRUE,marginal=TRUE,nplots=5,
-  seed=NA,pos="topright")
+  seed=NA,pos="topright",...)
 }
 
 \arguments{
@@ -38,6 +38,7 @@ The name of the predictor variable for which the plot of y vs. x is to be made.
   }
   \item{seed}{the seed for the random number seed if reproducibility is required}
   \item{pos}{the location of the legend}
+  \item{...}{additional arguments past to \code{plot}, namely \code{xlim} and \code{ylim} }
 }
 
 \details{
@@ -58,11 +59,11 @@ Adam Petrie
   data(SALARY)
   FOREST <- randomForest(Salary~.,data=SALARY)
   visualize_relationship(FOREST,interest="Experience",on=SALARY)
-  visualize_relationship(FOREST,interest="Months",marginal=FALSE,nplots=7,on=SALARY)
+  visualize_relationship(FOREST,interest="Months",on=SALARY,xlim=c(1,15),ylim=c(2500,4500))
 
   data(WINE)
   TREE <- rpart(Quality~.,data=WINE)
   visualize_relationship(TREE,interest="alcohol",on=WINE,smooth=FALSE)
-  visualize_relationship(TREE,interest="alcohol",on=WINE,marginal=FALSE,nplots=5,smooth=FALSE)
+  visualize_relationship(TREE,interest="alcohol",on=WINE,marginal=FALSE,nplots=7,smooth=FALSE)
 }
 

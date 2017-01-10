@@ -16,12 +16,12 @@ all_correlations(X,type="pearson",interest=NA,sorted="none")
 A data frame
 }
   \item{type}{
-Either \code{pearson} or \code{spearman}.  If \code{pearson}, the Pearson correlations are returned.  If \code{spearman}, the Spearman's rank correlations are returned.
+Either \code{pearson}, \code{spearman}, or \code{both}.  If \code{pearson}, the Pearson correlations are returned.  If \code{spearman}, the Spearman's rank correlations are returned.
 }
  \item{interest}{If specified, returns only pairwise correlations with this variable.  Argument should be in quotes and must give the exact name of the column of the variable of interest.}
 
 
-\item{sorted}{Either \code{none}, \code{strength}, \code{significance}, or \code{magnitude}.   If \code{strength}, sorts the list from most negative correlation to most positive (remember, correlations are stronger the farther they are from 0 (positive or negative).  If \code{significance}, sorts the list by p-value.  If \code{none}, no sorting takes place.}
+\item{sorted}{Either \code{none}, \code{strength}, \code{significance}, or \code{magnitude}.   If \code{strength}, sorts the list from most negative correlation to most positive (remember, correlations are stronger the farther they are from 0 (positive or negative).  If \code{significance}, sorts the list by p-value.  If \code{none}, no sorting takes place.  Note:  if \code{both} is requested, no sorting takes place and an error message is output.}
 }
 
 \details{

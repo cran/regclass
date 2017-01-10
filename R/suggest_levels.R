@@ -1,6 +1,5 @@
 suggest_levels <-
-  function(formula,data,maxlevels=NA,target=NA,recode=FALSE) {
-    
+  function(formula,data,maxlevels=NA,target=NA,recode=FALSE,plot=TRUE,...) {
     
     FORM <- formula(formula)
     variables <- as.character(attr(terms(FORM), "variables"))[-1]
@@ -43,7 +42,6 @@ suggest_levels <-
     
     TAB <- TAB[order(TAB$y),]
 
-    
     PART <- rpart(y~x,data=TAB,control=rpart.control(cp=0,minbucket=1,minsplit = 1))
     
     if( class(y) %in% c("numeric","integer") ) { BIC <- BIC(lm(y~1)) }
@@ -78,46 +76,26 @@ suggest_levels <-
    }
    
    
+   
    xx <- factor(x,levels=as.character( TAB$x ), ordered=TRUE )
-   
+
+  DF <- data.frame(y=y,xx=xx)
    if(class(y)=="factor") {
-   plot(0,0,col="white",xlim=c(0,1.3),ylim=c(-.05,1),xlab=x.label,ylab=y.label,main="",axes=FALSE)
-   axis(1,at=seq(0,1,.05))
-   axis(2,at=seq(0,1,.05))
-   ny.levels <- 2
-   nx.levels <- length(levels(xx))
-   ylevel.names <- levels(y)
-   xlevel.names <- levels(xx)
-   O<-matrix(table(xx,y),nrow=nx.levels,ncol=ny.levels)
-   n <- length(y)
-   marginal.y <- apply(O,2,sum)/n
-   break.y <- c(0,cumsum(marginal.y))
-   COLORS <- grey(c(.2,.6))
-   for (i in 1:ny.levels) {
-     rect(1.01,break.y[i],1.11,break.y[i+1],col=COLORS[i])
-     text(1.10,(break.y[i+1]+break.y[i])/2,ylevel.names[i],srt=0,pos=4,cex=1)   }
-   
-   marginal.x <- apply(O,1,sum)/n
-   break.x <- c(0,cumsum(marginal.x))
-   for(i in 1:nx.levels) {
-     text( (break.x[i+1]+break.x[i])/2,-.05,xlevel.names[i] )
-     marginal.y <- O[i,]/sum(O[i,])
-     break.y <- c(0,cumsum(marginal.y))
-     for (j in 1:ny.levels) { rect(break.x[i],break.y[j],break.x[i+1],break.y[j+1],col=COLORS[j]) }
-   }
-   
-   if(suggested>1) {
+     if(plot==TRUE) { mosaic(y~xx,data=DF,...) }
+    if(suggested>1) {
      ID <- prune(PART,cp=PART$cptable[suggested,1])$where
-     abline(v=break.x[1+which(diff(ID)!=0)],lwd=4,col="red")
-   }
+     break.x <- c(0, (1:length(levels(xx)) )/length(levels(x)) )
+     if(plot==TRUE) { abline(v=break.x[1+which(diff(ID)!=0)],lwd=4,col="blue") }
+     }     }
    
-   }
-   
+
+         
+
    if(class(y)%in%c("numeric","integer") ) {
-     plot(y~xx,xlab=x.label,ylab=y.label)
+     if(plot==TRUE) { plot(y~xx,xlab=x.label,ylab=y.label,...) }
      if(suggested>1) {
        ID <- prune(PART,cp=PART$cptable[suggested,1])$where
-       abline(v=0.5+which(diff(ID)!=0),lwd=4,col="red")
+       if(plot==TRUE) { abline(v=0.5+which(diff(ID)!=0),lwd=4,col="red") }
      }
      
    }

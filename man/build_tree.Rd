@@ -9,7 +9,7 @@ Exploratory building of partition models
 A tool to choose the "correct" complexity parameter of a tree
 }
 \usage{
-build_tree(form, data, minbucket = 5, seed=NA, holdout)
+build_tree(form, data, minbucket = 5, seed=NA, holdout, mincp=0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,6 +28,9 @@ If given, specifies the random number seed so the crossvalidation error can be r
 
   \item{holdout}{
 If given, the error on the holdout sample is calculated and given in the cp table.
+}
+
+  \item{mincp}{The \code{cp} parameter to which the tree will be grown.  By default it is 0 (recommended), but it can be changed for large datasets.  A value of 0.0001 is likely reasonable.
 }
 
 }
@@ -51,6 +54,8 @@ Adam Petrie
 \examples{
   data(JUNK)
   build_tree(Junk~.,data=JUNK,seed=1337)
+  data(CENSUS)
+  build_tree(ResponseRate~.,data=CENSUS,seed=2017,mincp=0.001)
   data(OFFENSE)
   build_tree(Win~.,data=OFFENSE[1:200,],seed=2029,holdout=OFFENSE[201:352,])
 }

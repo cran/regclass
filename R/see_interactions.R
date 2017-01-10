@@ -207,7 +207,7 @@ function(M,pos="bottomright",many=FALSE,level=0.95,...) {
             if(line=="q") {
               par(mfrow=c(1,1))
               par(mar=c(5, 4, 4, 2) + 0.1)
-              return("Command completed"); }}
+              cat("\nCommand completed\n"); }}
           
         }
         

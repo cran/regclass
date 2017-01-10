@@ -1,8 +1,8 @@
 build_tree <-
-function(form,data,minbucket=5,seed=NA,holdout) {
+function(form,data,minbucket=5,seed=NA,holdout,mincp=0) {
   if(!is.na(seed)) { set.seed(seed) }
   FORM <- formula(form)
-  TREE <- rpart(FORM,data,control=rpart.control(cp=0,xval=10,minbucket=minbucket))
+  TREE <- rpart(FORM,data,control=rpart.control(cp=mincp,xval=10,minbucket=minbucket))
   CPs <- TREE$cptable
   colnames(CPs) <- c("cp","nsplit","rel error","Est Gen Error","SD Gen Error")
   
