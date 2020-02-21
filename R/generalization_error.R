@@ -1,6 +1,16 @@
 generalization_error <-
 function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
     
+  
+  is.caret.glm <- ( head(class(M),1)=="train" & (if(length(M$method>0)){M$method=="glm"}else{FALSE})  )
+  if(is.caret.glm) {
+    NEW <- M$trainingData
+    form <- as.character(formula(M))
+    names(NEW)[1] <- form[2]
+    form <- as.formula(paste(form[2],form[1],form[-(1:2)]))
+    M <- glm(form,data=NEW,family=binomial) 
+  }
+  
     if(!is.na(seed)) { set.seed(seed) }
     y.name <- unlist(strsplit(as.character(MODEL$call),split=" ")[[2]])[1]
     y.pos <- which(names(HOLDOUT)==y.name)
@@ -100,12 +110,12 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
     }
     
     #Regression
-    if( sum( class(MODEL)[1]%in%c("lm","glm")) ==1 ) {
+    if( sum( head(class(MODEL),1)%in%c("lm","glm")) ==1 ) {
         M <- MODEL
         DATA <- M$model
         n <- nrow(DATA)
         
-        if(class(M)[1]=="glm") {
+        if(head(class(M),1)=="glm") {
             y.levels <- names(table(DATA[,1]))
             CM.train <- CM(M)
             if(dim(CM.train)[1] == 3) { misclass.train <- (CM.train[2,1]+CM.train[1,2])/CM.train[3,3] }
@@ -136,7 +146,7 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
             return( list(Confusion.Matrices=list(Training=CM.train,Holdout=CM.holdout),Misclassification.Rates=list(Training=misclass.train,Holdout=misclass.holdout)) )
         }
         
-        if(class(M)[1]=="lm") {
+        if(head(class(M),1)=="lm") {
             predicteds <- fitted(M)
             actuals <- DATA[,1]
             RMSE.train <- sqrt(mean(residuals(M)^2))

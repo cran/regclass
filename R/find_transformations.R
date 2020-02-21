@@ -1,6 +1,6 @@
 find_transformations <-
   function(M,powers=seq(from=-3,to=3,by=.25),threshold=0.02,...) {
-    if(class(M)!="lm") { stop("Argument needs to be a fitted simple linear regression model using lm()") }
+    if(head(class(M),1)!="lm") { stop("Argument needs to be a fitted simple linear regression model using lm()") }
     V <- names(M$coef)
     DATA <- M$model
     if(length(V)>2) { stop("This function is valid only for simple linear regression.") }

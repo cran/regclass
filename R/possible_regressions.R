@@ -7,7 +7,7 @@ function(M,permutations=100,sse=TRUE,reduction=TRUE) {
   x.label <- names(M$model)[2]
   x <- M$model[,2]
   
-  if(class(M)[1]=="lm") {
+  if(head(class(M),1)=="lm") {
     
     if(sse) { par(mfrow=c(1,2)) } else { par(mfrow=c(1,1)) }
     plot(y~x,xlab=x.label,ylab=y.label,pch=20,cex=0.8)
@@ -40,7 +40,7 @@ function(M,permutations=100,sse=TRUE,reduction=TRUE) {
   }
   
   
-  if(class(M)[1]=="glm") {
+  if(head(class(M),1)=="glm") {
     M.orig <- M
     visualize_model(M)
     for (i in 1:permutations) {

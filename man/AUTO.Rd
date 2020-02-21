@@ -22,8 +22,9 @@ Characteristics of cars from 1991
 Although this is a popular dataset, there is some question as to the units of the fuel efficiency.  The source claims it to be in miles per gallon, but the numbers reported seem unrealistic.  However, the units do not appear to be in km/gallon or km/L.
 }
 \source{
-Data provided by the U.S. Environmental Protection Agency and obtained from the Data and Story library \url{http://lib.stat.cmu.edu/DASL/Stories/carmpg.html}
+Data provided by the U.S. Environmental Protection Agency and obtained from the (former) Data and Story library
 }
+
 \references{
 R.M. Heavenrich, J.D. Murrell, and K.H. Hellman, Light Duty Automotive
 Technology and Fuel Economy Trends Through 1991, U.S. Environmental Protection

@@ -1,6 +1,6 @@
 see_interactions <-
 function(M,pos="bottomright",many=FALSE,level=0.95,...) {
-    if(class(M)!="lm") { stop("First argument needs to be a fitted linear regression model using lm()") }
+    if(head(class(M),1)!="lm") { stop("First argument needs to be a fitted linear regression model using lm()") }
     
     DATA <- M$model
     V <- names(M$coef)
@@ -22,10 +22,10 @@ function(M,pos="bottomright",many=FALSE,level=0.95,...) {
     for (i in 1:length(int)) {
         v1 <- unlist(strsplit(int[i],split=":"))[1]
         v2 <- unlist(strsplit(int[i],split=":"))[2]
-        if(class(DATA[,v1]) %in% c("integer","numeric") | class(DATA[,v2]) %in% c("integer","numeric") ) { 
+        if(head(class(DATA[,v1]),1) %in% c("integer","numeric") | head(class(DATA[,v2]),1) %in% c("integer","numeric") ) { 
           selected <- c(selected,i)
           L[i,] <- c(pn,pn+1)
-          if( (class(DATA[,v1]) == "factor"| class(DATA[,v2]) == "factor") ) { 
+          if( (head(class(DATA[,v1]),1) == "factor"| head(class(DATA[,v2]),1) == "factor") ) { 
             if(i==1) { L[i,] <- c(1,0); to.put <- 1 } else{
               L[i,] <- c(0,0)
               if( to.put>0 ) { L[to.put,2] <- pn; to.put <- 0 } else  {  L[i,1]<-pn;  to.put <- i } 
@@ -55,7 +55,7 @@ function(M,pos="bottomright",many=FALSE,level=0.95,...) {
         x1 <- DATA[,var1]
         x2 <- DATA[,var2]
         
-        if(class(x1)%in%c("integer","numeric")&class(x2)%in%c("integer","numeric")) {
+        if(head(class(x1),1)%in%c("integer","numeric")&head(class(x2),1)%in%c("integer","numeric")) {
         min.x1 <- quantile(x1,1-level)
         min.x2 <- quantile(x2,1-level)
         max.x1 <- quantile(x1,level)
@@ -158,7 +158,7 @@ function(M,pos="bottomright",many=FALSE,level=0.95,...) {
           new <- DATA
           new[,setdiff(1:ncol(DATA),c(cats,whichvar1,whichvar2))] <- 0
           
-          if(class(x1)=="factor") { x.c <- 1 } else { x.c <- 2 }
+          if(head(class(x1),1)=="factor") { x.c <- 1 } else { x.c <- 2 }
           if(x.c==1) {
             F <- list()
             for (z in 1:nlevels(x1)) {

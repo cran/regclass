@@ -20,7 +20,7 @@ Appliance shipments from 1960 to 1985}
   }
 }
 \details{
-From the Data and Story library \url{http://lib.stat.cmu.edu/DASL/Datafiles/appliancedat.html}
+From the (former) Data and Story library.
 
 The file gives unit shipments of dishwashers, disposers, refrigerators, and washers in the United States from 1960 to 1985. This and other data are published currently in the Department of Commerce's Survey of Current Business, and are summarized from time to time in their publication, Business Statistics. Also included in the file are durable goods expenditures and private residential investment in the United States.
 }

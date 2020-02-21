@@ -71,7 +71,7 @@ The goal is to predict \code{ResponseRate} from the other predictors.  \code{Res
 }
 
 \references{
-See \url{http://www.census.gov/research/data/planning_database/2014/docs/PDB_Block_2014-11-20a.pdf} for variable definitions.
+See \url{https://www2.census.gov/programs-surveys/research/guidance/planning-databases/2014/pdb-block-2014-11-20a.pdf} for variable definitions.
 }
 
 \keyword{datasets}

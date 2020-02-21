@@ -37,12 +37,12 @@ Adam Petrie
   data(WINE)
 	TREE <- rpart(Quality~.,data=WINE,control=rpart.control(cp=0.01,xval=10,minbucket=5))
 	summarize_tree(TREE)
-	RF <- randomForest(Quality~.,data=WINE)
+	RF <- randomForest(Quality~.,data=WINE,ntree=50)
 	summarize_tree(RF)
 	
 	data(NFL)
 	TREE <- rpart(X4.Wins~.,data=NFL,control=rpart.control(cp=0.002,xval=10,minbucket=5))
 	summarize_tree(TREE)
-	RF <- randomForest(X4.Wins~.,data=NFL,ntrees=500)
+	RF <- randomForest(X4.Wins~.,data=NFL,ntree=50)
 	summarize_tree(RF)
 	 }

@@ -18,5 +18,5 @@ Housing data for Exercise E in Chapter 3}
 Selling prices of houses (perhaps in the Boston area in Massachusettes).
 }
 \source{
-Original source unknown, but it appears in many places around the internet, e.g., \url{http://www.public.iastate.edu/~pdixon/stat500/data/realestate.txt} }
+Original source unknown, but it appears in many places around the internet, e.g., \code{public.iastate.edu/~pdixon/stat500/data/realestate.txt} }
 \keyword{datasets}

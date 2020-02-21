@@ -1,6 +1,6 @@
 choose_order <-
   function(M,max.order=6,sort=FALSE,loc="topleft",...) {
-    if(class(M)!="lm") { cat("Argument must be a fitted model\n"); return() }
+    if(head(class(M),1)!="lm") { cat("Argument must be a fitted model\n"); return() }
     V <- names(M$coef)
     if(length(V)>2) { stop("This function is valid only for simple linear regression") }
     

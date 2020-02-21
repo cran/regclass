@@ -10,12 +10,12 @@ Visualizations of one or two variable linear or logistic regressions or of parti
 Provides useful plots to illustrate the inner-workings of regression models with one or two predictors or a partition model with not too many branches.
 }
 \usage{
-visualize_model(M,loc="topleft",level=0.95,cex.leg=0.7,...)
+visualize_model(M,loc="topleft",level=0.95,cex.leg=0.7,midline=TRUE,...)
 }
 
 \arguments{
   \item{M}{
-A linear or logistic regression model with one or two predictors (not all categorical) or a partition model
+A linear or logistic regression model with one or two predictors (not all categorical) produced by  \code{lm} or \code{glm}, respectively, or a partition model produced by \code{rpart}.  It is ok to pass an object made with \code{train} from the \code{caret} package if method \code{lm} or \code{glm} is used.
 }
   \item{loc}{
 The location for the legend, if one is to be displayed.  Can also be "top", "topright", "left", "center", "right", "bottomleft", "bottom", or "bottomright".
@@ -25,6 +25,9 @@ The location for the legend, if one is to be displayed.  Can also be "top", "top
   }
   \item{cex.leg}{
   Magnification factor for text in legends.  Smaller numbers indicate smaller text.  Default is 0.7.
+  }
+  \item{midline}{
+  logical, either \code{TRUE} (draw a dotted line at p=0.5 for logistic regression) or \code{FALSE} (do not draw line)
   }
   \item{...}{
   Additional arguments to \code{plot}.  This is typically only used for logistic regression models where \code{xlim} is to be specified to see the entirety of the curve instead of using the default range.
@@ -79,7 +82,7 @@ Adam Petrie
 
   #Multiple logistic regression with two quantitative predictors
   M <- glm(Quality~alcohol*sulphates,data=WINE,family=binomial)
-  visualize_model(M,loc="left")
+  visualize_model(M,loc="left",midline=FALSE)
 
   data(TIPS)
   #Multiple logistic regression with one categorical and one quantitative predictor

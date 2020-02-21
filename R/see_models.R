@@ -1,6 +1,6 @@
 see_models <-
 function(ALLMODELS,report=0,aicc=FALSE,reltomin=FALSE) {
-    if(class(ALLMODELS)!="regsubsets") { cat("Input must be the saved results of performing regsubsets()\n") }
+    if(head(class(ALLMODELS),1)!="regsubsets") { cat("Input must be the saved results of performing regsubsets()\n") }
     RESULTS <- summary(ALLMODELS)$which
     n <- ALLMODELS$d[1]
     k <- apply(summary(ALLMODELS)$which,1,sum);

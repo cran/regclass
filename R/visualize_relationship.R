@@ -7,7 +7,7 @@ visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,np
   
   y.name <- unlist(strsplit(as.character( formula(TREE)[2] ),"\\(" ) )
   y.val <- on[,which(names(on)==y.name)]
-  if(class(y.val)=="factor") { y.values <- as.numeric(y.val) - 1 } else { y.values <- y.val }
+  if(head(class(y.val),1)=="factor") { y.values <- as.numeric(y.val) - 1 } else { y.values <- y.val }
   x.val <- on[,selected.column]
   x.u <- sort( unique(x.val) )
   
@@ -18,7 +18,7 @@ visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,np
   }
   
   if(marginal==TRUE) {
-    if(class(y.val)=="factor") { y.pred <- predict(TREE,newdata=on,type="prob")[,1] } else {
+    if(head(class(y.val),1)=="factor") { y.pred <- predict(TREE,newdata=on,type="prob")[,1] } else {
       y.pred <- predict(TREE,newdata=on) }
     
     y.avg <- c()
@@ -47,7 +47,7 @@ visualize_relationship <- function(TREE,interest,on,smooth=TRUE,marginal=TRUE,np
       on.expanded <- on[rep(row.names(on)[sample(1:nrow(on),1)],length(x.u)), ]
       row.names(on.expanded) <- NULL
       on.expanded[,selected.column] <- x.u
-      if(class(y.val)=="factor") { py <- predict(TREE,newdata=on.expanded,type="prob")[,1] } else {
+      if(head(class(y.val),1)=="factor") { py <- predict(TREE,newdata=on.expanded,type="prob")[,1] } else {
         py <- predict(TREE,newdata=on.expanded)
       }
       

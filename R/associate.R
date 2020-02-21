@@ -44,8 +44,8 @@ associate <-
     if( length(setdiff(c(class(x)[1],class(y)[1]),c("character","factor","numeric","integer","logical","AsIs","ordered")))>0) {
       stop(paste("Error:  both x and y need to be numeric vectors, character vectors, or factors.\n Currently, x is",class(x),"and y is",class(y),"\n"))
     }
-    if(class(x)[1]=="AsIs") { x <- as.numeric(x) }
-    if(class(y)[1]=="AsIs") { y <- as.numeric(y) }
+    if(head(class(x),1)=="AsIs") { x <- as.numeric(x) }
+    if(head(class(y),1)=="AsIs") { y <- as.numeric(y) }
     
     
     
@@ -89,7 +89,7 @@ associate <-
     #White test of constant variance:  this is verbatim from Package bstats version 1.1-11-5
     white.test <- function(lmobj, squares.only = FALSE)
     {
-      stopifnot(class(lmobj) == "lm")
+      stopifnot(head(class(lmobj),1) == "lm")
       mydata <- lmobj$model
       mydata[, 1] <- lmobj$residual^2
       fml <- lmobj$call$formula
@@ -228,8 +228,8 @@ associate <-
     
     
     
-    CX <- class(x)[1]
-    CY <- class(y)[1]
+    CX <- head(class(x),1)
+    CY <- head(class(y),1)
     
     
     #Determine what we're looking at:  case=0 both numeric, case=1 y numeric/x categorical, case=2 y categorical/x numeric; case3=both categorical
@@ -389,7 +389,7 @@ associate <-
       
       #If y is the numeric variable, we are comparing averages for each level of x, otherwise try logistic regression
       
-      if( class(y)[1]=="numeric" | class(y)[1]=="integer" ) { subcase <- 1 } else { subcase <- 2}
+      if( head(class(y),1)=="numeric" | head(class(y),1)=="integer" ) { subcase <- 1 } else { subcase <- 2}
       
       
       #Tackle the y numerical and x categorical case first
@@ -404,7 +404,8 @@ associate <-
         y <- y[complete.cases]
         
         #Coerce x to be a factor if it is not, and store the level names
-        if(class(x)[1]!="ordered") { x <- factor(x) }
+        if(head(class(x),1)!="ordered") { x <- factor(x) }
+        if(min(table(x))<2) { stop("At least one level of the x variable has a single observation.  Terminating. ")}
         n.levels <- length(unique(x))
         level.names <- sort(unique(x))
         
@@ -609,13 +610,15 @@ associate <-
         
         
         #Consider only complete cases
-        if(class(y)[1]!="ordered") { y <- factor(y) }
+        if(head(class(y),1)!="ordered") { y <- factor(y) }
         complete.x <- intersect( which(!is.na(x)), which(is.finite(x)))
         complete.y <- intersect( which(!is.na(y)), which(y!="") )
         complete.cases <- intersect(complete.x,complete.y)
         x <- x[complete.cases]
         xx <- x
         y <- droplevels(y[complete.cases])
+        if(min(table(y))<2) { stop("At least one level of the y variable has a single observation.  Terminating. ")}
+        
         level.names <- levels(y)
         ny.levels <- length(levels(y))
         D.temp <- data.frame(x=x,y=y);  D.temp <- D.temp[order(D.temp$x),]
@@ -777,8 +780,11 @@ associate <-
       x <- x[complete.cases]
       y <- y[complete.cases]
       
-      if(class(x)[1]!="ordered") { x <- factor(x) }
-      if(class(y)[1]!="ordered") { y <- factor(y) }
+      if(head(class(x),1)!="ordered") { x <- factor(x) }
+      if(head(class(y),1)!="ordered") { y <- factor(y) }
+      
+      if(min(table(x))<2) { stop("At least one level of the x variable has a single observation.  Terminating. ")}
+      if(min(table(y))<2) { stop("At least one level of the y variable has a single observation.  Terminating. ")}
       
       n <- length(x)
       nx.levels <- length(unique(x))

@@ -10,7 +10,7 @@ Provides a mosaic plot to visualize the association between two categorical vari
 
 \usage{
 mosaic(formula,data,color=TRUE,labelat=c(),xlab=c(),ylab=c(),
-                            magnification=1,equal=FALSE,inside=FALSE) 
+                            magnification=1,equal=FALSE,inside=FALSE,ordered=FALSE) 
 }
 
 \arguments{
@@ -37,6 +37,8 @@ An optional argument giving the name of the data frame that contains x and y.  I
     \item{equal}{If \code{FALSE}, the bar widths are proportional to the frequency of the corresponding level.  If \code{TRUE}, the bar widths are all equal (useful if there are many levels or some are extremely rare).}
 
    \item{inside}{If \code{FALSE}, labels are beneath the bars.  If \code{TRUE}, labels are placed inside the bars and rotated (useful if the levels have long names) }
+
+   \item{ordered}{If \code{FALSE}, bars are in alphabetical order.  If \code{TRUE}, the ordering of the bars reflects the ordering of the factor levels.}
 
 }
 

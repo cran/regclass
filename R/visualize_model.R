@@ -1,9 +1,26 @@
 visualize_model <-
-  function(M,loc="topleft",level=0.95,cex.leg=0.7,...) {
+  function(M,loc="topleft",level=0.95,cex.leg=0.7,midline=TRUE,...) {
+    
+    is.caret.glm <- ( head(class(M),1)=="train" & (if(length(M$method>0)){M$method=="glm"}else{FALSE})  )
+    if(is.caret.glm) {
+      NEW <- M$trainingData
+      form <- as.character(formula(M))
+      names(NEW)[1] <- form[2]
+      form <- as.formula(paste(form[2],form[1],form[-(1:2)]))
+      M <- glm(form,data=NEW,family=binomial) 
+    }
+    is.caret.lm <- ( head(class(M),1)=="train" & (if(length(M$method>0)){M$method=="lm"}else{FALSE})  )
+    if(is.caret.lm) {
+      NEW <- M$trainingData
+      form <- as.character(formula(M))
+      names(NEW)[1] <- form[2]
+      form <- as.formula(paste(form[2],form[1],form[-(1:2)]))
+      M <- lm(form,data=NEW)
+    }
     
     COLORS <- c("blue","black","red")
     
-    if(class(M)[1]=="lm") {
+    if(head(class(M),1)=="lm") {
       y.label <- names(M$model)[1]
       y <- M$model[,1]
       
@@ -14,7 +31,7 @@ visualize_model <-
         par(mfrow=c(1,1))
         x.label <- names(M$model)[2]
         x <- M$model[,2]
-        if( !(class(x) %in% c("integer","numeric") )) { stop(cat("Error:  the model cannot have I(), poly(), factors, or transformations like x^2 in its formulation\n")) } 
+        if( !(head(class(x),1) %in% c("integer","numeric") )) { stop(cat("Error:  the model cannot have I(), poly(), factors, or transformations like x^2 in its formulation\n")) } 
         new <- data.frame(sort(x))
         names(new) <- x.label
         conf.int <- predict(M,newdata=new,interval="confidence",level)$fit
@@ -36,8 +53,8 @@ visualize_model <-
         x2.label <- names(M$model)[3]
         x1 <- M$model[,2]
         x2 <- M$model[,3]
-        x1.q <- ifelse(class(M$model[,2])%in%c("integer","numeric"),TRUE,FALSE)
-        x2.q <- ifelse(class(M$model[,3])%in%c("integer","numeric"),TRUE,FALSE)
+        x1.q <- ifelse(head(class(M$model[,2]),1)%in%c("integer","numeric"),TRUE,FALSE)
+        x2.q <- ifelse(head(class(M$model[,3]),1)%in%c("integer","numeric"),TRUE,FALSE)
         
         #Both predictors are quantitative
         if(!x1.q&!x2.q) { stop(cat("Error:  the model requires at least one quantitative predictor\n")) }
@@ -136,7 +153,7 @@ visualize_model <-
       }
     }
     
-    if(class(M)[1]=="glm") {
+    if(head(class(M),1)=="glm") {
       
       opts <- list(...)
       if(length(opts$xlim)>0) { x.plot <- seq(opts$xlim[1],opts$xlim[2],length=100)  } 
@@ -154,12 +171,13 @@ visualize_model <-
         par(mfrow=c(1,1))
         x.label <- names(M$model)[2]
         x <- M$model[,2]
-        if( !(class(x) %in% c("integer","numeric") )) { stop(cat("Error:  the model cannot have I(), poly(), factors, or transformations like x^2 in its formulation\n")) } 
+        if( !(head(class(x),1) %in% c("integer","numeric") )) { stop(cat("Error:  the model cannot have I(), poly(), factors, or transformations like x^2 in its formulation\n")) } 
         b0 <- M$coef[1]
         b1 <- M$coef[2]
         if(length(opts$xlim)==0) { x.plot <- seq(min(x),max(x),length=100) }
         y.plot <- exp(b0+b1*x.plot)/(1+exp(b0+b1*x.plot))
         plot(x.plot,y.plot,xlab=x.label,ylab=paste("Probability of ",interest),ylim=c(0,1),type="l",...) 
+if(midline==TRUE) {         abline(h=0.5,lwd=0.7,lty=3) }
         title("Fitted logistic curve")
       } 
       
@@ -168,8 +186,8 @@ visualize_model <-
         x2.label <- names(M$model)[3]
         x1 <- M$model[,2]
         x2 <- M$model[,3]
-        x1.q <- ifelse(class(M$model[,2])%in%c("integer","numeric"),TRUE,FALSE)
-        x2.q <- ifelse(class(M$model[,3])%in%c("integer","numeric"),TRUE,FALSE)
+        x1.q <- ifelse(head(class(M$model[,2]))%in%c("integer","numeric"),TRUE,FALSE)
+        x2.q <- ifelse(head(class(M$model[,3]))%in%c("integer","numeric"),TRUE,FALSE)
         
         #Both predictors are quantitative
         if(!x1.q&!x2.q) { stop(cat("Error:  the model requires at least one quantitative predictor\n")) }
@@ -191,6 +209,7 @@ visualize_model <-
           plot(0,0,xlab=x1.label,xlim=range(x.plot),ylim=c(0,1),col="white",
                ylab=paste("Probability of",interest),
                main=paste("Implicit lines relating probability of",interest,"to",x1.label,"\nfor various values of",x2.label),cex.main=0.9)
+  if(midline==TRUE) {         abline(h=0.5,lwd=0.7,lty=3) }
           
           
           for(z in 1:3) { lines(x.plot,P[[z]],col=COLORS[z]) } 
@@ -210,6 +229,7 @@ visualize_model <-
           plot(0,0,xlab=x2.label,xlim=range(x.plot),ylim=c(0,1),col="white",
                ylab=paste("Probability of",interest),
                main=paste("Implicit lines relating probability of",interest,"to",x2.label,"\nfor various values of",x1.label),cex.main=0.90)
+  if(midline==TRUE) {         abline(h=0.5,lwd=0.7,lty=3) }
           
           for(z in 1:3) { lines(x.plot,P[[z]],col=COLORS[z]) } 
           legend(loc,paste(x1.label,c("small","median","large")),lty=1,col=COLORS,cex=cex.leg)
@@ -243,6 +263,7 @@ visualize_model <-
           cat.label <- ifelse(x1.q,x2.label,x1.label)
           if(x1.q) { plot.label <- x1.label } else { plot.label <- x2.label }
           plot(x.plot,x.plot,xlab=plot.label,ylab=paste("Probability of",interest),ylim=c(0,1),col="white") 
+  if(midline==TRUE) {         abline(h=0.5,lwd=0.7,lty=3) }
           title(paste("Implicit lines relating probability of",interest,"to",plot.label,"\nfor each level of",cat.label),cex.main=0.90)
           
           
@@ -267,7 +288,7 @@ visualize_model <-
       
     }
     
-    if(class(M)[1]=="rpart") {
+    if(head(class(M),1)=="rpart") {
       levs <- colnames(predict(M))
       if(M$method=="anova") { 
         node.fun <- function(x,labs,digits,varlen) {

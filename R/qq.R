@@ -1,6 +1,6 @@
 qq <-
 function(x,ax=NA,leg=NA,cex.leg=0.8)  {
-  if (! ( class(x) %in% c("integer","numeric") ) ) { stop(paste("Error:  only allows numeric variables.  You passed a",class(x))) }
+  if (! ( head(class(x),1) %in% c("integer","numeric") ) ) { stop(paste("Error:  only allows numeric variables.  You passed a",class(x))) }
   if(is.na(ax)) { x.label <- deparse(substitute(x)) } else { x.label <- ax }
   x <- sort(x)
   n <- length(x)

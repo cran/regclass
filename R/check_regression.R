@@ -2,13 +2,22 @@ check_regression <-
 function(M,extra=FALSE,tests=TRUE,simulations=500,n.cats=10,seed=NA,prompt=TRUE) {
   
   
+  is.caret.glm <- ( head(class(M),1) =="train" & (if(length(M$method>0)){M$method=="glm"}else{FALSE})  )
+  if(is.caret.glm) {
+    NEW <- M$trainingData
+    form <- as.character(formula(M))
+    names(NEW)[1] <- form[2]
+    form <- as.formula(paste(form[2],form[1],form[-(1:2)]))
+    M <- glm(form,data=NEW,family=binomial) 
+  }
+  
   if(length(intersect(class(M),c("lm","glm")))==0) {
     stop(cat("First argument needs to be a fitted linear regression model using lm() or logistic regression using glm()\n"))
   }
   
   
   #Linear Regression
-  if(class(M)[1]=="lm") {
+  if(head(class(M),1)=="lm") {
 
     DATA <- M$model
     
@@ -48,7 +57,7 @@ function(M,extra=FALSE,tests=TRUE,simulations=500,n.cats=10,seed=NA,prompt=TRUE)
     y <- DATA[,1]
     MM <- model.matrix(M)
     X <- MM[,-1]
-    if(class(X)!="matrix") { X <- matrix(X,ncol=1); colnames(X) <- colnames(MM)[2] }
+    if(head(class(X),1) %in% c("numeric","integer") ) { X <- matrix(X,ncol=1); colnames(X) <- colnames(MM)[2] }
     
     #Statistical Tests of assumptions
     
@@ -228,7 +237,7 @@ function(M,extra=FALSE,tests=TRUE,simulations=500,n.cats=10,seed=NA,prompt=TRUE)
     par(mar=c(5, 4, 4, 2) + 0.1)
       }
     
-  if(class(M)[1]=="glm"){
+  if(head(class(M),1)=="glm"){
     
     if(!is.na(seed)) { set.seed(seed) }
     #Method 1:  comparing observed values to simulated values if model was correct

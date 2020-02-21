@@ -20,6 +20,6 @@ Movie grosses from the late 1990s
 The goal is to predict the total gross of a movie based on its opening weekend gross.  
 }
 \source{
-\url{imdb.com}
+Compiled via information provided on \url{https://www.imdb.com/}
 }
 \keyword{datasets}

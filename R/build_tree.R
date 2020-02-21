@@ -16,7 +16,7 @@ function(form,data,minbucket=5,seed=NA,holdout,mincp=0) {
       TREE.temp <- rpart(FORM,data,control=rpart.control(cp=cp,xval=10,minbucket=minbucket))
       pred.train <- predict(TREE.temp,newdata=data)
       pred.temp <- predict(TREE.temp,newdata=holdout)
-      if(class(y.actual)=="factor") { 
+      if(head(class(y.actual),1)=="factor") { 
         rmse.holdout <- c( rmse.holdout, 1-sum( colnames(pred.temp)[ apply(pred.temp,1,which.max) ] == y.actual )/length(y.actual))
         rmse.train <- c( rmse.train, 1-sum( colnames(pred.train)[ apply(pred.train,1,which.max) ] == y.actualtrain )/length(y.actualtrain))
         

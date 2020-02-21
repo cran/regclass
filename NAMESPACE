@@ -5,6 +5,7 @@ import(VGAM)
 import(rpart)
 import(randomForest)
 importFrom("rpart.plot","prp")
+importFrom("utils", "head")
 importFrom("grDevices", "grey", "rainbow")
 importFrom("graphics", "abline", "axis", "barplot", "box", "curve",
              "hist", "layout", "legend", "lines", "locator", "par",

@@ -1,6 +1,6 @@
 influence_plot <- 
 function(M,large.cook,cooks=FALSE) {
-    if(class(M)!="lm") { stop(cat("Argument must be a fitted model using lm()\n")) }
+    if(head(class(M),1)!="lm") { stop(cat("Argument must be a fitted model using lm()\n")) }
     par(mfrow=c(1,1))
     par(mar=c(5,4,4,2)+0.1)
     plot( hatvalues(M), rstudent(M), type="n", xlab="Leverage", ylab="deleted Studentized residuals", main="",cex.lab=1.2,cex.axis=1.2)

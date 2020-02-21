@@ -1,4 +1,4 @@
-mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),magnification=1,equal=FALSE,inside=FALSE) 
+mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),magnification=1,equal=FALSE,inside=FALSE,ordered=FALSE) 
 {
   par(mfrow = c(1, 1))
   par(mar = c(5, 4, 4, 2) + 0.1)
@@ -31,10 +31,10 @@ mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),mag
   complete.cases <- intersect(complete.x, complete.y)
   x <- x[complete.cases]
   y <- y[complete.cases]
-  if (class(x)[1] != "ordered") {
+  if (head(class(x),1) != "ordered") {
     x <- factor(x)
   }
-  if (class(y)[1] != "ordered") {
+  if (head(class(y),1) != "ordered") {
     y <- factor(y)
   }
   if (length(x) < 2 | length(y) < 2) {
@@ -53,6 +53,12 @@ mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),mag
   if(length(labelat)>0) { xlevel.names[!(xlevel.names %in% labelat)] <- "" }
   
   ylevel.names <- levels(y)
+  if(ordered==TRUE) {
+    A <- aggregate(y~x,FUN=function(x)mean(x==levels(y)[1]))
+    A$x <- as.character(A$x)
+    A <- A[order(A$y,decreasing=TRUE),]
+    x <- factor(x,ordered=TRUE,levels=A$x)
+  }
   CONT.TAB <- table(x, y)
   CONT.TAB <- addmargins(CONT.TAB)
   rownames(CONT.TAB)[nx.levels + 1] <- "Total"

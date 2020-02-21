@@ -8,12 +8,13 @@ Combines rare levels of a categorical variable
 This function takes a categorical variable and combines all levels with frequencies less than a user-specified threshold named \code{Combined}
 }
 \usage{
-combine_rare_levels(x,threshold=20)
+combine_rare_levels(x,threshold=20,newname="Combined")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{a vector of categorical values}
   \item{threshold}{levels that appear a total of \code{threshold} times or fewer will be combined into a new level called \code{Combined} }
+  \item{newname}{defaults to \code{Combined}, but give the option as to what this new level will be called}
 }
 
 \details{
@@ -22,7 +23,7 @@ Returns a list of two objects:
 \code{values} - The recoded values of the categorical variable.  All levels which appeared \code{threshold} times or fewer are now known as \code{Combined}
 \code{combined} - The levels that have been combined together
 
-If, after being combined, the \code{Combined} level has \code{threshold} or fewer instances, the remaining level that appears least often is combined as well.
+If, after being combined, the \code{newname} level has \code{threshold} or fewer instances, the remaining level that appears least often is combined as well.
 }
 
 \references{

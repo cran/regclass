@@ -1,7 +1,7 @@
 all_correlations <- 
 function(X,type="pearson",interest=NA,sorted="none") {
     if(sorted!="none" & type=="both") { stop("Sorting is only supported if type='pearson' or type='spearman'")}
-    if(class(X)!="data.frame") { 
+    if(head(class(X),1)!="data.frame") { 
       stop(paste("This function only accepts data frames.",deparse(substitute(X)),"is a",class(X),"\n"))
     }
     if(type!="pearson" & type != "spearman" & type != "both") { 
@@ -24,7 +24,7 @@ function(X,type="pearson",interest=NA,sorted="none") {
     z<-1
     for (i in 1:(nvar-1)) {
       for (j in (i+1):nvar) {
-        if( (class(X[,i])=="numeric" | class(X[,i]) =="integer") & (class(X[,j])=="numeric" | class(X[,j]) =="integer"))      {
+        if( (head(class(X[,i]),1)=="numeric" | head(class(X[,i]),1) =="integer") & (head(class(X[,j]),1)=="numeric" | head(class(X[,j]),1) =="integer"))      {
           COR <- cor.test(X[,i],X[,j],method=type)
           RESULTS[z,] <- list(names(X)[i],names(X)[j],COR$est, COR$p.val)
           z<-z+1
@@ -39,7 +39,7 @@ function(X,type="pearson",interest=NA,sorted="none") {
       z<-1
       for (i in 1:(nvar-1)) {
         for (j in (i+1):nvar) {
-          if( (class(X[,i])=="numeric" | class(X[,i]) =="integer") & (class(X[,j])=="numeric" | class(X[,j]) =="integer"))      {
+          if( (head(class(X[,i]),1)=="numeric" | head(class(X[,i]),1) =="integer") & (head(class(X[,j]),1)=="numeric" | head(class(X[,j]),1) =="integer"))      {
             COR1 <- cor.test(X[,i],X[,j],method="pearson")
             COR2 <- cor.test(X[,i],X[,j],method="spearman")
             RESULTS[z,] <- list(names(X)[i],names(X)[j],COR1$est, COR1$p.val,COR2$est, COR2$p.val)
