@@ -8,7 +8,7 @@ function(x) {
     par(mgp = c(0.5, 1, 0))
     plot(factor(x)~factor(rep(" ",length(x))),xlab=xlabel,ylab="",axes=FALSE,col=grey(seq(.3,.9,length=length(offset))))
     axis(2)
-    text(0.5,fs+offset,labels=levels(factor(x)))
-    axis(4,at=fs+offset,labels=prettyNum(table(x)/length(x),drop0trailing=FALSE,digits=2,format="e"),las=1)
+    text(0.5,1-(fs+offset),labels=levels(factor(x)))
+    axis(4,at=1-(fs+offset),labels=prettyNum(table(x)/length(x),drop0trailing=FALSE,digits=2,format="e"),las=1)
     par(mgp=c(3, 1, 0))
 }

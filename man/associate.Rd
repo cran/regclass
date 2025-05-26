@@ -85,7 +85,7 @@ Adam Petrie
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{lm}}, \code{\link{glm}}, \code{\link{anova}}, \code{\link{cor}}, \code{\link{chisq.test}}, \code{\link{vglm}} }
+\code{\link{lm}}, \code{\link{glm}}, \code{\link{anova}}, \code{\link{cor}}, \code{\link{chisq.test}}, \code{\link[VGAM]{vglm}} }
 \examples{
   #Two quantitative variables
   data(SALARY)

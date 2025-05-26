@@ -55,7 +55,7 @@ Introduction to Regression and Modeling
 Adam Petrie
 }
 
-\seealso{ \code{\link{rpart}}, \code{\link{lm}}, \code{\link{glm}}}
+\seealso{ \code{\link[rpart]{rpart}}, \code{\link{lm}}, \code{\link{glm}}}
 \examples{
   data(SALARY)
   #Simple linear regression with 90% confidence and prediction intervals

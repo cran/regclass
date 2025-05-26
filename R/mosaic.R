@@ -12,15 +12,13 @@ mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),mag
   if(length(ylab)==0) { y.label <- variables[1] } else { y.label <- ylab }
   
   
-  if (sum( class(try(eval(parse(text = variables[2]), envir = data), 
-                silent = TRUE)) == "try-error")>0) {
+  if (inherits(try(eval(parse(text = variables[2]), envir = data), silent = TRUE), "try-error")) {
     x <- eval(parse(text = variables[2]))
   }
   else {
     x <- eval(parse(text = variables[2]), envir = data)
   }
-  if (class(try(eval(parse(text = variables[1]), envir = data), 
-                silent = TRUE)) == "try-error") {
+  if (inherits(try(eval(parse(text = variables[2]), envir = data), silent = TRUE), "try-error")) {
     y <- eval(parse(text = variables[1]))
   }
   else {
@@ -31,10 +29,10 @@ mosaic <- function(formula, data, color = TRUE,labelat=c(),xlab=c(),ylab=c(),mag
   complete.cases <- intersect(complete.x, complete.y)
   x <- x[complete.cases]
   y <- y[complete.cases]
-  if (head(class(x),1) != "ordered") {
+  if (!inherits(x, "ordered")) {
     x <- factor(x)
   }
-  if (head(class(y),1) != "ordered") {
+  if (!inherits(y, "ordered")) {
     y <- factor(y)
   }
   if (length(x) < 2 | length(y) < 2) {

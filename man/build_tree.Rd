@@ -40,7 +40,7 @@ This command combines the action of building a tree to its maximum possible exte
 If \code{holdout} is given, the RMSE/misclassification rate on the training and holdout samples are provided in the cp table.
 }
 
-\seealso{ \code{\link{rpart}}, \code{\link{getcp}}}
+\seealso{ \code{\link[rpart]{rpart}}, \code{\link{getcp}}}
 
 
 \references{

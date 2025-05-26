@@ -9,14 +9,18 @@ suggest_levels <-
     
     
     #Define x and y, checking data first before the existing environment 
-    if( class(try(eval(parse(text=variables[2]),envir=data),silent=TRUE))=="try-error" ) {
-      x <- eval(parse(text=variables[2]))
-    } else { x <- eval(parse(text=variables[2]),envir=data) }
-    
-    if( class(try(eval(parse(text=variables[1]),envir=data),silent=TRUE))=="try-error" ) {
-      y <- eval(parse(text=variables[1]))
-    } else { y <- eval(parse(text=variables[1]),envir=data) }
-    
+    if (inherits(try(eval(parse(text = variables[2]), envir = data), silent = TRUE), "try-error")) {
+      x <- eval(parse(text = variables[2]))
+    }
+    else {
+      x <- eval(parse(text = variables[2]), envir = data)
+    }
+    if (inherits(try(eval(parse(text = variables[2]), envir = data), silent = TRUE), "try-error")) {
+      y <- eval(parse(text = variables[1]))
+    }
+    else {
+      y <- eval(parse(text = variables[1]), envir = data)
+    }   
     x <- factor(x)
     if(is.na(maxlevels)) { maxlevels <- min(26,nlevels(x)) }
     
@@ -25,7 +29,7 @@ suggest_levels <-
     if(recode==TRUE & maxlevels>26) { stop("Can recode into a max of 26 levels") }
     
     #Make sure y is the right type of variable
-    if( !( head(class(y),1) %in% c("integer","numeric") ) ) { 
+    if (!inherits(y, c("integer", "numeric"))) {
       y <- factor(y) 
       if( length(levels(y)) > 2 ) { stop("Error:  y should only have two possible values.") } 
     }
@@ -37,15 +41,15 @@ suggest_levels <-
     if( length(unique(x)) < 2 | length(unique(y)) < 2) { stop(paste("Error:  need at least 2 unique values to proceed.")) }
     
     
-    if (head(class(y),1) %in% c("numeric","integer")) { TAB <- aggregate(y~x,FUN=mean) }
-    if (head(class(y),1) == "factor" ) {  TAB <- aggregate(y~x,FUN=function(x)mean(x==levels(x)[1])) }
+    if (inherits(y, c("numeric", "integer"))) { TAB <- aggregate(y~x,FUN=mean) }
+    if (inherits(y, c("factor"))) {  TAB <- aggregate(y~x,FUN=function(x)mean(x==levels(x)[1])) }
     
     TAB <- TAB[order(TAB$y),]
 
     PART <- rpart(y~x,data=TAB,control=rpart.control(cp=0,minbucket=1,minsplit = 1))
     
-    if( head(class(y),1) %in% c("numeric","integer") ) { BIC <- BIC(lm(y~1)) }
-    if( head(class(y),1) == "factor" )  { BIC <- BIC(glm(y~1,family=binomial)) }
+    if (inherits(y, c("numeric", "integer"))) { BIC <- BIC(lm(y~1)) }
+    if (inherits(y, c("factor"))) {  BIC <- BIC(glm(y~1,family=binomial)) }
     
     if(missing(maxlevels)) { maxlevels <- nrow(TAB) }
     
@@ -63,8 +67,8 @@ suggest_levels <-
 
       BIC.table$clusters[tree] <- paste("(",paste(clustID, collapse=")("),")",sep="")
       
-      if( head(class(y),1) %in% c("numeric","integer") ) { BIC.table$BIC[tree] <- BIC(lm(y~x.temp)) }
-      if( head(class(y),1) == "factor" )  { BIC.table$BIC[tree] <- BIC(glm(y~x.temp,family=binomial)) }
+      if (inherits(y, c("numeric", "integer"))) { BIC.table$BIC[tree] <- BIC(lm(y~x.temp)) }
+      if (inherits(y, c("factor"))) { BIC.table$BIC[tree] <- BIC(glm(y~x.temp,family=binomial)) }
     }
       
    suggested <- min( which(BIC.table$BIC <= ( min(BIC.table$BIC) + 5 ) ) )
@@ -80,7 +84,7 @@ suggest_levels <-
    xx <- factor(x,levels=as.character( TAB$x ), ordered=TRUE )
 
   DF <- data.frame(y=y,xx=xx)
-   if(head(class(y),1)=="factor") {
+  if (inherits(y, c("factor"))) {
      if(plot==TRUE) { mosaic(y~xx,data=DF,...) }
     if(suggested>1) {
      ID <- prune(PART,cp=PART$cptable[suggested,1])$where
@@ -91,7 +95,7 @@ suggest_levels <-
 
          
 
-   if(head(class(y),1)%in%c("numeric","integer") ) {
+  if (inherits(y, c("numeric", "integer"))) {
      if(plot==TRUE) { plot(y~xx,xlab=x.label,ylab=y.label,...) }
      if(suggested>1) {
        ID <- prune(PART,cp=PART$cptable[suggested,1])$where

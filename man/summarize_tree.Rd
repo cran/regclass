@@ -32,17 +32,19 @@ Introduction to Regression and Modeling
 Adam Petrie
 }
 
-\seealso{ \code{\link{rpart}}, \code{\link{randomForest}}}
+\seealso{ \code{\link[rpart]{rpart}}, \code{\link[randomForest]{randomForest}}}
 \examples{
   data(WINE)
-	TREE <- rpart(Quality~.,data=WINE,control=rpart.control(cp=0.01,xval=10,minbucket=5))
+  set.seed(2025); SUBSET <- WINE[sample(1:nrow(WINE),size=500),]
+	TREE <- rpart(Quality~.,data=SUBSET,control=rpart.control(cp=0.01,xval=10,minbucket=5))
 	summarize_tree(TREE)
-	RF <- randomForest(Quality~.,data=WINE,ntree=50)
+	RF <- randomForest(Quality~.,data=SUBSET,ntrees=50)
 	summarize_tree(RF)
 	
 	data(NFL)
-	TREE <- rpart(X4.Wins~.,data=NFL,control=rpart.control(cp=0.002,xval=10,minbucket=5))
+	SUBSET <- NFL[,1:10]
+	TREE <- rpart(X4.Wins~.,data=SUBSET,control=rpart.control(cp=0.002,xval=10,minbucket=5))
 	summarize_tree(TREE)
-	RF <- randomForest(X4.Wins~.,data=NFL,ntree=50)
+	RF <- randomForest(X4.Wins~.,data=SUBSET,ntrees=50)
 	summarize_tree(RF)
 	 }

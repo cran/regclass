@@ -163,7 +163,7 @@ function(M,extra=FALSE,tests=TRUE,simulations=500,n.cats=10,seed=NA,prompt=TRUE)
     
     
     #Normality Tests
-    if( length(nrow(DATA)) <= 5000 ) {
+    if( nrow(DATA) <= 5000 ) {
       normality <- shapiro.test(residuals(M))$p.value } else {
         normality <- ks.test(residuals(M),"pnorm",0,sd(residuals(M)))$p.value
       }

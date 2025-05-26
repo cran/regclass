@@ -26,6 +26,7 @@ visualize_model <-
       
       TERMS <- as.character(attr(terms(M),"variables"))[-(1:2)]
       
+      if(length(TERMS)>2) { cat(paste("Can only visualize models with at most 2 predictors."))}
       #simple linear regression
       if(length(TERMS)==1) {  
         par(mfrow=c(1,1))
@@ -164,7 +165,7 @@ visualize_model <-
       
       
       
-      if(length(TERMS)>3) { stop(cat("Error:  model can have at most two predictors\n")) } 
+      if(length(TERMS)>3) { cat(paste("Model can have at most two predictors\n")) } 
       
       #Simple logistic regression first
       if(length(TERMS)==1) {

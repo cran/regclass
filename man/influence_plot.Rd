@@ -9,7 +9,7 @@ Influence plot for regression diganostics
 This function plots the leverage vs. deleted studentized residuals for a regression model, highlighting points that are influent based on these two factors as well as Cook's distance  
 }
 \usage{
-influence_plot(M,large.cook,cooks=FALSE)
+influence_plot(M,large.cook,cooks=FALSE,label=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,10 @@ The threshold for a "large" Cook's distance.  If not specified, a default of 4/n
 
   \item{cooks}{
 \code{TRUE} or \code{FALSE} (default) regarding whether to return the row numbers of observations with unusually large Cooks distances 
+}
+
+  \item{label}{
+\code{TRUE} or \code{FALSE} (default) label influential points with the row number instead of an X.  If \code{TRUE} then ONLY the influential points will show up on the plot
 }
 
 }

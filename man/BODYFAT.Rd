@@ -31,6 +31,6 @@ Popular Bodyfat dataset
 Bodyfat can be accurately measured by the hydrostatic technique, where someone is submereged in a tank of water.  It would be useful to be able to predict body fat from measurements that are simpler to obtain.  Unless otherwise specified, all physical measurements are in centimeters.
 }
 \source{
-This is a modified version of the data available in ``Fitting Percentage of Body Fat to Simple Body Measurements" as appearing in Journal of Statistics Education v4 n1 (1996).  \url{http://www.amstat.org/publications/jse/v4n1/datasets.johnson.html}
+This is a modified version of the data available in ``Fitting Percentage of Body Fat to Simple Body Measurements" as appearing in Journal of Statistics Education v4 n1 (1996). 
 }
 \keyword{datasets}

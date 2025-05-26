@@ -2,10 +2,10 @@ generalization_error <-
 function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
     
   
-  is.caret.glm <- ( head(class(M),1)=="train" & (if(length(M$method>0)){M$method=="glm"}else{FALSE})  )
+  is.caret.glm <- ( inherits(MODEL,"train") & (if(length(MODEL$method>0)){MODEL$method=="glm"}else{FALSE})  )
   if(is.caret.glm) {
-    NEW <- M$trainingData
-    form <- as.character(formula(M))
+    NEW <- MODEL$trainingData
+    form <- as.character(formula(MODEL))
     names(NEW)[1] <- form[2]
     form <- as.formula(paste(form[2],form[1],form[-(1:2)]))
     M <- glm(form,data=NEW,family=binomial) 
@@ -37,7 +37,7 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
         T }
 
     #Random forest
-    if( sum(class(MODEL) %in% c("randomForest"))==1 )  {
+    if( inherits(MODEL,"randomForest") ) { 
         if(MODEL$type=="regression") {
             predicteds <- predict(MODEL,newdata=HOLDOUT)
             actuals <- HOLDOUT[,y.pos]
@@ -63,7 +63,7 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
     }
     
     #Partition
-    if( sum( class(MODEL)%in%c("rpart") )==1 ) {
+    if (inherits(MODEL, "rpart")) {
         if(MODEL$method=="anova") {
             RMSE.train <- sqrt(mean(residuals(MODEL)^2))
             predicteds <- predict(MODEL,newdata=HOLDOUT)
@@ -110,12 +110,12 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
     }
     
     #Regression
-    if( sum( head(class(MODEL),1)%in%c("lm","glm")) ==1 ) {
+    if (inherits(MODEL, "lm")) {
         M <- MODEL
         DATA <- M$model
         n <- nrow(DATA)
         
-        if(head(class(M),1)=="glm") {
+        if( inherits(M,"glm") ) { 
             y.levels <- names(table(DATA[,1]))
             CM.train <- CM(M)
             if(dim(CM.train)[1] == 3) { misclass.train <- (CM.train[2,1]+CM.train[1,2])/CM.train[3,3] }
@@ -146,7 +146,7 @@ function(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA) {
             return( list(Confusion.Matrices=list(Training=CM.train,Holdout=CM.holdout),Misclassification.Rates=list(Training=misclass.train,Holdout=misclass.holdout)) )
         }
         
-        if(head(class(M),1)=="lm") {
+        if( inherits(M,"lm") ) { 
             predicteds <- fitted(M)
             actuals <- DATA[,1]
             RMSE.train <- sqrt(mean(residuals(M)^2))

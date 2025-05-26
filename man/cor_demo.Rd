@@ -9,9 +9,12 @@ Correlation demo
 \description{
 This function shows the correlation and coefficient of determination as user interactively adds datapoints.  Useful for seeing what different values of correlation look like and seeing the effect of outliers.  }
 \usage{
-cor_demo(cex.leg=0.8)
+cor_demo(newplot=FALSE,cex.leg=0.8)
 }
 \arguments{
+  \item{newplot}{
+If \code{TRUE}, a new x11 window is created to show the demo.  This helps if the points appear in places different than where the user clicks on some versions of R.
+}
   \item{cex.leg}{
 A number specifying the magnification of legends inside the plot.  Smaller numbers mean smaller font.
 }

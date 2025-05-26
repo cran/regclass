@@ -20,7 +20,7 @@ function(form,data,type="predictive",Kfold=5,repeats=10,prompt=TRUE,seed=NA,hold
   names(Xy)[ncol(Xy)] <- yname
   
   
-  if(!missing(holdout)) { 
+  if(is.data.frame(holdout)) { 
     if(model.family=="gaussian") { M.h <- lm(FORM,data=holdout) }
     if(model.family=="binomial") { M.h <- glm(FORM,data=holdout,family="binomial") }
     Xy.h <- data.frame(model.matrix(M.h)[,-1],holdout[,y.pos])
@@ -136,10 +136,12 @@ function(form,data,type="predictive",Kfold=5,repeats=10,prompt=TRUE,seed=NA,hold
     selected.vars <- setdiff(selected.vars,c("(Intercept)","Intercept"))
     cat("\n")
     cat(paste("Model with lowest estimated generalization error has:\n"))
+    if(length(selected.vars)==0) { cat("No Predictors") } else { 
     cat(paste(selected.vars))
     bf <- paste(yname,"~",
                 paste( unlist( lapply( strsplit(selected.vars,split=".",fixed=TRUE), function(x)paste(x,collapse = ":")) ),collapse="+"))
     cat(paste("\n Closest Formula:",bf))
+    }
     cat("\n")
     selected.model2 <- min(which(CVs<=min(CVs)+SDs[which.min(CVs)[1]]))
     if(selected.model==selected.model2) { rownames(CVtable)[selected.model2] <- "+*"} else {
@@ -149,10 +151,12 @@ function(form,data,type="predictive",Kfold=5,repeats=10,prompt=TRUE,seed=NA,hold
     selected.vars <- setdiff(selected.vars,c("(Intercept)","Intercept"))
     cat("\n")
     cat(paste("Model selected with one standard deviation rule has:\n"))
-    cat(paste(selected.vars))
-    bf <- paste(yname,"~",
-                paste( unlist( lapply( strsplit(selected.vars,split=".",fixed=TRUE), function(x)paste(x,collapse = ":")) ),collapse="+"))
-    cat(paste("\n Closest Formula:",bf))
+    if(length(selected.vars)==0) { cat("No Predictors") } else { 
+      cat(paste(selected.vars)) 
+      bf <- paste(yname,"~",
+                  paste( unlist( lapply( strsplit(selected.vars,split=".",fixed=TRUE), function(x)paste(x,collapse = ":")) ),collapse="+"))
+      cat(paste("\n Closest Formula:",bf))
+    }
     cat("\n")
     cat("\n")
     

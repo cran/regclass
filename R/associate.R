@@ -30,23 +30,28 @@ associate <-
     
     
     #Define x and y, checking data first before the existing environment 
-    if( class(try(eval(parse(text=variables[2]),envir=data),silent=TRUE))=="try-error" ) {
+    if (inherits(try(eval(parse(text = variables[2]), envir = data), silent = TRUE), "try-error")) {
       x <- eval(parse(text=variables[2]))
     } else { x <- eval(parse(text=variables[2]),envir=data) }
     
-    if( class(try(eval(parse(text=variables[1]),envir=data),silent=TRUE))=="try-error" ) {
+    if (inherits(try(eval(parse(text = variables[1]), envir = data), silent = TRUE), "try-error")) {
       y <- eval(parse(text=variables[1]))
     } else { y <- eval(parse(text=variables[1]),envir=data) }
     
     
     
     #Make sure x and y are things we can work with.  If x/y is "AsIs", convert to numerical
-    if( length(setdiff(c(class(x)[1],class(y)[1]),c("character","factor","numeric","integer","logical","AsIs","ordered")))>0) {
-      stop(paste("Error:  both x and y need to be numeric vectors, character vectors, or factors.\n Currently, x is",class(x),"and y is",class(y),"\n"))
-    }
-    if(head(class(x),1)=="AsIs") { x <- as.numeric(x) }
-    if(head(class(y),1)=="AsIs") { y <- as.numeric(y) }
+    allowed_classes <- c("character", "factor", "numeric", "integer", "logical", "ordered")
     
+    if (!any(sapply(allowed_classes, inherits, x = x)) ||
+        !any(sapply(allowed_classes, inherits, x = y))) {
+      stop(paste("Error: both x and y need to be numeric vectors, character vectors, or factors.\n",
+                 "Currently, x is", paste(class(x), collapse = ", "),
+                 "and y is", paste(class(y), collapse = ", "), "\n"))
+    }
+    
+    if (inherits(x, "AsIs")) { x <- as.numeric(x) }
+    if (inherits(y, "AsIs")) { y <- as.numeric(y) }   
     
     
     #Make sure there's enough data
@@ -89,7 +94,7 @@ associate <-
     #White test of constant variance:  this is verbatim from Package bstats version 1.1-11-5
     white.test <- function(lmobj, squares.only = FALSE)
     {
-      stopifnot(head(class(lmobj),1) == "lm")
+      stopifnot(inherits(lmobj, "lm"))
       mydata <- lmobj$model
       mydata[, 1] <- lmobj$residual^2
       fml <- lmobj$call$formula
@@ -227,16 +232,11 @@ associate <-
     
     
     
-    
-    CX <- head(class(x),1)
-    CY <- head(class(y),1)
-    
-    
+    is_categorical <- function(v) { inherits(v, c("character", "factor", "logical", "ordered")) }
+    x_cat <- is_categorical(x)
+    y_cat <- is_categorical(y)
     #Determine what we're looking at:  case=0 both numeric, case=1 y numeric/x categorical, case=2 y categorical/x numeric; case3=both categorical
-    case <- sum( c( CX=="character" | CX=="factor" | CX == "logical" | CX == "ordered", CY=="character" | CY=="factor" | CY == "logical" | CY=="ordered" ))
-    
-    
-    
+    case <- as.integer(x_cat) + as.integer(y_cat)
     
     #x and y are both numeric
     if(case==0) { 
@@ -389,7 +389,11 @@ associate <-
       
       #If y is the numeric variable, we are comparing averages for each level of x, otherwise try logistic regression
       
-      if( head(class(y),1)=="numeric" | head(class(y),1)=="integer" ) { subcase <- 1 } else { subcase <- 2}
+      if (inherits(y, c("numeric", "integer"))) {
+        subcase <- 1
+      } else {
+        subcase <- 2
+      }
       
       
       #Tackle the y numerical and x categorical case first
@@ -404,7 +408,7 @@ associate <-
         y <- y[complete.cases]
         
         #Coerce x to be a factor if it is not, and store the level names
-        if(head(class(x),1)!="ordered") { x <- factor(x) }
+        if (!inherits(x, "ordered")) { x <- factor(x) }
         if(min(table(x))<2) { stop("At least one level of the x variable has a single observation.  Terminating. ")}
         n.levels <- length(unique(x))
         level.names <- sort(unique(x))
@@ -610,7 +614,9 @@ associate <-
         
         
         #Consider only complete cases
-        if(head(class(y),1)!="ordered") { y <- factor(y) }
+        if (!inherits(y, "ordered")) {
+          y <- factor(y)
+        }
         complete.x <- intersect( which(!is.na(x)), which(is.finite(x)))
         complete.y <- intersect( which(!is.na(y)), which(y!="") )
         complete.cases <- intersect(complete.x,complete.y)
@@ -654,7 +660,7 @@ associate <-
         for (i in 1:n.cats) { 
           x.name <- paste(prettyNum(D.temp$x[x.breaks[i]],drop0trailing=TRUE,digits=3,format="e"),"to",prettyNum(D.temp$x[x.breaks[i+1]],drop0trailing=TRUE,digits=3,format="e"))
           new.x <- c(new.x,rep(x.name,x.cat[i]))
-          xlevel.names <- c(xlevel.names,x.name)
+          xlevel.names <- unique( c(xlevel.names,x.name) )
         }
         D.temp$x <- ordered(factor(new.x,levels=xlevel.names,ordered=TRUE))
         x <- D.temp$x;  y <- D.temp$y
@@ -780,8 +786,13 @@ associate <-
       x <- x[complete.cases]
       y <- y[complete.cases]
       
-      if(head(class(x),1)!="ordered") { x <- factor(x) }
-      if(head(class(y),1)!="ordered") { y <- factor(y) }
+      if (!inherits(x, "ordered")) {
+        x <- factor(x)
+      }
+      
+      if (!inherits(y, "ordered")) {
+        y <- factor(y)
+      }
       
       if(min(table(x))<2) { stop("At least one level of the x variable has a single observation.  Terminating. ")}
       if(min(table(y))<2) { stop("At least one level of the y variable has a single observation.  Terminating. ")}

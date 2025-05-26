@@ -1,5 +1,6 @@
 cor_demo <-
-  function(cex.leg=0.8) {
+  function(newplot=FALSE,cex.leg=0.8) {
+    if(newplot==TRUE) { dev.new("x11") }
     par(mfrow=c(1,1))
     plot(0,0,xlim=c(0,1),col="white",ylim=c(0,1),xlab="x",ylab="y",main="click plot to add points then click END below to stop demo",cex.main=0.9)
     rect(-1,.9,.2,2,col="white",border=NA);  text(0.1,0.95,"r2 =    ")

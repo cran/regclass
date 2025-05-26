@@ -9,10 +9,13 @@ Interactive demonstration of the effect of an outlier on a regression
 \description{
 This function shows regression lines on user-defined data before and after adding an additional point.}
 \usage{
-outlier_demo(cex.leg=0.8)
+outlier_demo(newplot=FALSE,cex.leg=0.8)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{newplot}{
+If \code{TRUE}, a new x11 window is created to show the demo.  This helps if the points appear in places different than where the user clicks on some versions of R.
+}
   \item{cex.leg}{
 A number specifying the magnification of legends inside the plot.  Smaller numbers mean smaller font.
 }

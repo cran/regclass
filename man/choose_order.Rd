@@ -11,7 +11,7 @@ Choosing order of a polynomial model
 This function takes a simple linear regression model and displays the adjusted R^2 and AICc for the original model (order 1) and for polynomial models up to a specified maximum order and plots the fitted models.
 }
 \usage{
-choose_order(M,max.order=6,sort=FALSE,loc="topleft",...)
+choose_order(M,max.order=6,sort=FALSE,loc="topleft",show=NULL,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +29,10 @@ How to sort the results.  If TRUE, "R2", "r2", "r2adj", or "R2adj", sorts from h
   \item{loc}{
 Location of the legend.  Can also be "top", "topright", "bottomleft", "bottom", "bottomright", "left", "right", "center"
 }
+  \item{show}{
+An optional vector of orders to examine, e.g. \code{c(1,3,8)}
+}
+
   \item{...}{
 Additional arguments to plot(), e.g., pch }
 

@@ -24,5 +24,5 @@ Diabetes among women aged 21+ with Pima heritage
 Data on 768 women belonging to the Pima tribe.  The purpose is to study the associations between having diabetes and various physiological characteristics.  Although there are surely other factors (including genetic) that influence the chance of having diabetes, the hope is that by having women who are genetically similar (all from the Pima tribe), that these other factors are naturally accounted for.
 
 }
-\source{ Adapted from the UCI data repository \url{https://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes}.  A variable measuring the ``diabetes pedigree function" has been omitted.}
+\source{ Adapted from the UCI data repository.  A variable measuring the ``diabetes pedigree function" has been omitted.}
 \keyword{datasets}

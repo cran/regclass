@@ -1,5 +1,5 @@
 influence_plot <- 
-function(M,large.cook,cooks=FALSE) {
+function(M,large.cook,cooks=FALSE,label=FALSE) {
     if(head(class(M),1)!="lm") { stop(cat("Argument must be a fitted model using lm()\n")) }
     par(mfrow=c(1,1))
     par(mar=c(5,4,4,2)+0.1)
@@ -14,8 +14,14 @@ function(M,large.cook,cooks=FALSE) {
     sizes[big.cooks] <- 2.5
     border <- rep(1,length(M$res))
     border[big.cooks] <- 2
-    points( hatvalues(M), rstudent(M), cex= 10*sqrt(cook)/max(sqrt(cook)),col=shade,lwd=sizes)
-    if (length(influential)>0) { text( hatvalues(M)[influential], rstudent(M)[influential], "x") }
+    if(label==FALSE) { 
+    points( hatvalues(M), rstudent(M), cex= 10*sqrt(cook)/max(sqrt(cook)),col=shade,lwd=sizes) }
+    if (length(influential)>0) { 
+      if(label==FALSE) { text( hatvalues(M)[influential], rstudent(M)[influential], "x")  } else {
+        text( hatvalues(M)[influential], rstudent(M)[influential], influential,cex=0.5)
+      }
+      
+      }
     abline(v=2*length(M$coef)/length(M$res))
     abline(h=c(-2,2))
     if(cooks==TRUE) { output<-list(Cooks=big.cooks, Leverage=influential) } else {

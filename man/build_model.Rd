@@ -7,7 +7,7 @@
 Variable selection for descriptive or predictive linear and logistic regression models
 }
 \description{
-This function uses \code{\link{bestglm}} to consider an extensive array of models and makes recommendations on what set of variables is appropriate for the final model.  Model hierarchy is not preserved.  Interactions and multi-level categorical variables are allowed.
+This function uses \code{\link[bestglm]{bestglm}} to consider an extensive array of models and makes recommendations on what set of variables is appropriate for the final model.  Model hierarchy is not preserved.  Interactions and multi-level categorical variables are allowed.
 }
 \usage{
 build_model(form,data,type="predictive",Kfold=5,repeats=10,
@@ -39,14 +39,14 @@ If \code{FALSE}, the procedure will not output a warning to the user if fitting 
 A optional dataframe to serve as a holdout sample.  The generalization error on the holdout sample will be calculated and displayed for the best model at each number of predictors.
 }
 \item{...}{
-Additional arguments to \code{\link{bestglm}}.  This allows the procedure to do a search rather than exhaustive enumeration or allows tweaking of the number of reported models or maximum number of independent variables (\code{nvmax}), etc.  See \code{\link{bestglm}} and \code{\link{regsubsets}}.
+Additional arguments to \code{\link[bestglm]{bestglm}}.  This allows the procedure to do a search rather than exhaustive enumeration or allows tweaking of the number of reported models or maximum number of independent variables (\code{nvmax}), etc.  See \code{\link[bestglm]{bestglm}} and \code{\link[leaps]{regsubsets}}.
 }
 
 }
 \details{
-This procedure takes the formula specified by \code{form} and the original dataframe and simply converts it into a form that \code{\link{bestglm}} (which normally cannot do cross-validation when categorical variables are involved) can use by adding in columns to represent interactions and categorical variables.
+This procedure takes the formula specified by \code{form} and the original dataframe and simply converts it into a form that \code{\link[bestglm]{bestglm}} (which normally cannot do cross-validation when categorical variables are involved) can use by adding in columns to represent interactions and categorical variables.
 
-One the dataframe has been generated, a warning is given to the user if the procedure may take too long (many rows or many potential predictors), and then \code{\link{bestglm}} is run.  A plot and table of models' performances is given, as well as a recommendation for a final set of variables (model with the lowest AIC/estimated generalization error, or a simpler model that is more or less equivalent). 
+One the dataframe has been generated, a warning is given to the user if the procedure may take too long (many rows or many potential predictors), and then \code{\link[bestglm]{bestglm}} is run.  A plot and table of models' performances is given, as well as a recommendation for a final set of variables (model with the lowest AIC/estimated generalization error, or a simpler model that is more or less equivalent). 
 
 The command returns a list with \code{bestformula} (the formula of the model with the lowest AIC or the model chosen by the one standard deviation rule), \code{bestmodel} (the fitted model that had the lowest AIC or the one chosen by the one standard deviation rule), \code{predictors} (a list giving the predictors that appeared in the best model with 1 predictor, with 2 predictors, etc).   
 
@@ -68,7 +68,7 @@ Adam Petrie
 }
 
 \seealso{
-\code{\link{bestglm}}, \code{\link{regsubsets}}, \code{\link{see.models}}, \code{\link{generalization.error}}.
+\code{\link[bestglm]{bestglm}}, \code{\link[leaps]{regsubsets}}, \code{\link{see.models}}, \code{\link{generalization.error}}.
 }
 
 \examples{
@@ -89,7 +89,6 @@ Adam Petrie
   SUBSET <- PURCHASE[sample(nrow(PURCHASE),500),]
   MODELS <- build_model(Purchase~.,data=SUBSET,type="descriptive",prompt=FALSE)
   MODELS$AICtable  #Model with 1 or 2 variables look pretty good
-  #Predict whether a purchase is made by # of previous visits and distance to store
 	MODELS$predictors[[2]]  
 
   #Predictive model.  

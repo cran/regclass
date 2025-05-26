@@ -36,7 +36,7 @@ Adam Petrie
 }
 
 
-\seealso{ \code{\link{rpart}}}
+\seealso{ \code{\link[rpart]{rpart}}}
 \examples{
   data(JUNK)
 	TREE <- rpart(Junk~.,data=JUNK,control=rpart.control(cp=0,xval=10,minbucket=5))

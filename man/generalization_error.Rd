@@ -15,7 +15,7 @@ generalization_error(MODEL,HOLDOUT,Kfold=FALSE,K=5,R=10,seed=NA)
 
 \arguments{
   \item{MODEL}{
-A linear regression model created using \code{\link{lm}}, a logistic regression model created using \code{\link{glm}}, a partition model created using \code{\link{rpart}}, or a random forest created using \code{\link{randomForest}}.}
+A linear regression model created using \code{\link{lm}}, a logistic regression model created using \code{\link{glm}}, a partition model created using \code{\link[rpart]{rpart}}, or a random forest created using \code{\link[randomForest]{randomForest}}.}
   \item{HOLDOUT}{
   A dataset for which the generalization error will be calculated.  If not given, the error on the data used to build the model (\code{MODEL}) is used.
   }
@@ -53,7 +53,7 @@ Adam Petrie
   #Education analytics
   data(STUDENT)
   set.seed(1010)
-  train.rows <- sample(1:nrow(STUDENT),0.7*nrow(STUDENT))
+  train.rows <- sample(1:nrow(STUDENT),0.5*nrow(STUDENT))
   TRAIN <- STUDENT[train.rows,]
   HOLDOUT <- STUDENT[-train.rows,]
   M <- lm(CollegeGPA~.,data=TRAIN)
@@ -61,23 +61,21 @@ Adam Petrie
   generalization_error(M,HOLDOUT,Kfold=TRUE,seed=5020)
   #Try partition and randomforest, though they do not perform as well as regression here
   TREE <- rpart(CollegeGPA~.,data=TRAIN)
-  FOREST <- randomForest(CollegeGPA~.,data=TRAIN)
+  FOREST <- randomForest(CollegeGPA~.,data=TRAIN,ntrees=50)
   generalization_error(TREE,HOLDOUT)
   generalization_error(FOREST,HOLDOUT) 
 
   #Wine
   data(WINE)
   set.seed(2020)
-  train.rows <- sample(1:nrow(WINE),0.7*nrow(WINE))
+  train.rows <- sample(1:nrow(WINE),0.5*nrow(WINE))
   TRAIN <- WINE[train.rows,]
   HOLDOUT <- WINE[-train.rows,]
   M <- glm(Quality~.^2,data=TRAIN,family=binomial)
   generalization_error(M,HOLDOUT)
   #Random forest predicts best on the holdout sample
   TREE <- rpart(Quality~.,data=TRAIN)
-  FOREST <- randomForest(Quality~.,data=TRAIN)
   generalization_error(TREE,HOLDOUT)
-  generalization_error(FOREST,HOLDOUT) 
 
 }
 

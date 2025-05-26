@@ -6,14 +6,15 @@ import(rpart)
 import(randomForest)
 importFrom("rpart.plot","prp")
 importFrom("utils", "head")
-importFrom("grDevices", "grey", "rainbow")
+importFrom("grDevices", "grey", "rainbow","dev.new")
 importFrom("graphics", "abline", "axis", "barplot", "box", "curve",
              "hist", "layout", "legend", "lines", "locator", "par",
              "points", "rect", "text", "title")
-importFrom("stats", "addmargins", "aggregate", "anova", "as.formula",
+importFrom("stats", "addmargins", "aggregate", "anova", "aov", "as.formula",
              "binom.test", "binomial", "chisq.test", "cooks.distance",
              "cor", "cor.test", "cov", "cov2cor", "dnorm", "drop1",
              "gaussian", "glm", "kruskal.test", "ks.test", "lm",
              "lm.fit", "loess", "lsfit", "mahalanobis", "median",
              "model.response", "pchisq", "ppoints", "qnorm", "quantile",
-             "rbinom", "rstudent", "sd", "shapiro.test", "step")
+             "rbinom", "rstudent", "sd", "shapiro.test", "step","TukeyHSD")
+
